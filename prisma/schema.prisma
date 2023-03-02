@@ -1,0 +1,138 @@
+// This is your Prisma schema file.
+// Learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+// Model for Jeu
+model Jeu {
+  id_jeu           Int      @id @default(autoincrement())
+  titre            String
+  annee_sortie     String
+  cover            String   @db.Text
+  difficulte       String?
+  description      String   @db.Text
+  resume           String   @db.Text
+  note             Float?
+  id_auteur        Int?
+  id_univers       Int?
+  lien_affiliation_amazon String?
+  lien_affiliation_philibert String?
+  lien_affiliation_externe String?
+  Auteur           Auteur? @relation(fields: [id_auteur], references: [id_auteur])
+  Univers          Univers? @relation(fields: [id_univers], references: [id_univers])
+  Jeu_Genre        Jeu_Genre[]
+}
+
+// Model for Auteur
+model Auteur {
+  id_auteur        Int      @id @default(autoincrement())
+  nom_auteur       String
+  id_region        Int?
+  Region           Region? @relation(fields: [id_region], references: [id_region])
+  Jeu              Jeu[]
+  LivresJeux       LivresJeux[]
+  Journaling       Journaling[]
+  JeuxDePlateau    JeuxDePlateau[]
+}
+
+// Model for Region
+model Region {
+  id_region        Int      @id @default(autoincrement())
+  nom_region       String
+  Auteur           Auteur[]
+}
+
+// Model for Univers
+model Univers {
+  id_univers       Int      @id @default(autoincrement())
+  nom_univers      String
+  Jeu              Jeu[]
+}
+
+// Model for Genre
+model Genre {
+  id_genre         Int      @id @default(autoincrement())
+  nom_genre        String
+  Jeu_Genre        Jeu_Genre[]
+}
+
+// Model for Jeu_Genre
+model Jeu_Genre {
+  id_jeu           Int
+  id_genre         Int
+  Jeu              Jeu     @relation(fields: [id_jeu], references: [id_jeu])
+  Genre            Genre   @relation(fields: [id_genre], references: [id_genre])
+
+  @@id([id_jeu, id_genre])
+}
+
+// Model for Journaling
+model Journaling {
+  id               Int      @id @default(autoincrement())
+  titre            String
+  description      String   @db.Text
+  note             Float?
+  id_auteur        Int?
+  lien_affiliation_amazon String?
+  lien_affiliation_philibert String?
+  lien_affiliation_externe String?
+  Auteur           Auteur?  @relation(fields: [id_auteur], references: [id_auteur])
+}
+// Model for JeuxDePlateau
+model JeuxDePlateau {
+  id               Int      @id @default(autoincrement())
+  nom              String
+  description      String   @db.Text
+  nombre_joueurs   Int
+  age_minimum      Int
+  duree            Int
+  editeur          String
+  image            String   @db.Text
+  note             Float?
+  id_auteur        Int?
+  lien_affiliation_amazon String?
+  lien_affiliation_philibert String?
+  lien_affiliation_externe String?
+  Auteur           Auteur?  @relation(fields: [id_auteur], references: [id_auteur])
+}
+
+// Model for LivresJeux
+model LivresJeux {
+  id               Int      @id @default(autoincrement())
+  titre            String
+  annee_sortie     String
+  description      String   @db.Text
+  note             Float?
+  id_auteur        Int?
+  lien_affiliation_amazon String?
+  lien_affiliation_philibert String?
+  lien_affiliation_externe String?
+  Auteur           Auteur?  @relation(fields: [id_auteur], references: [id_auteur])
+}
+
+// Model for OutilsDeCreation
+model OutilsDeCreation {
+  id               Int      @id @default(autoincrement())
+  nom              String
+  description      String   @db.Text
+  lien_affiliation_amazon String?
+  lien_affiliation_philibert String?
+  lien_affiliation_externe String?
+}
+
+// Model for Materiel
+model Materiel {
+  id               Int      @id @default(autoincrement())
+  nom              String
+  description      String   @db.Text
+  lien_affiliation_amazon String?
+  lien_affiliation_philibert String?
+  lien_affiliation_externe String?
+}

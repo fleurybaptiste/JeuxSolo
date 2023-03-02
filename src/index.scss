@@ -1,0 +1,13 @@
+body {
+    margin: 0;
+}
+
+@font-face {
+    font-family: "Vecna";
+    src: local("Vecna"), url("./Fonts/Vecna/Vecna-oppx.ttf") format("truetype");
+}
+
+@font-face {
+    font-family: "Fire";
+    src: local("Fire"), url("./Fonts/Fire/fire.ttf");
+}
